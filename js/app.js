@@ -56,7 +56,7 @@ const displayPhones = (phones) =>{
 }
 
 const processSearch = () =>{
-    toggleSpinner(true);
+    // toggleSpinner(true);
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
     loadPhones(searchText);
@@ -70,7 +70,7 @@ document.getElementById('btn-search').addEventListener('click', function(){
 
 // search input field enter key handler
 document.getElementById('search-field').addEventListener('keypress', function (e) {
-    console.log(e.key)
+    // console.log(e.key)
     if (e.key === 'Enter') {
         processSearch(10);
     }
@@ -93,10 +93,13 @@ document.getElementById('btn-show-all').addEventListener('click', function(){
 })
 
 const loadPhoneDetails = async id =>{
-    const url =`www.openapi.programming-hero.com/api/phone/${id}`;
+    // console.log(id)
+    toggleSpinner(false)
+    const url =`https://openapi.programming-hero.com/api/phone/${id}`;
     const res = await fetch(url);
     const data = await res.json();
     displayPhoneDetails(data.data);
+    toggleSpinner(true)
 }
 
 const displayPhoneDetails = phone =>{
