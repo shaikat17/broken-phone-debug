@@ -1,10 +1,14 @@
+let allPhone = []
+let limit = true
+
 const loadPhones = async(searchText) =>{
     toggleSpinner(false)
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     const res = await fetch(url);
     const data = await res.json();
     // console.log(data.data)
-    displayPhones(data.data, );
+    allPhone = data.data
+    displayPhones(allPhone);
     toggleSpinner(true)
 }
 
@@ -12,14 +16,14 @@ const displayPhones = (phones) =>{
     const phonesContainer = document.getElementById('phones-container');
     phonesContainer.textContent = '';
     // display 10 phones only 
-    // console.log(phones.length)
+    console.log(phones.length)
     const showAll = document.getElementById('show-all');
-    if(phones.length > 10) {
+    if(phones.length > 10 && limit === true) {
         phones = phones.slice(0, 10);
         showAll.classList.remove('d-none');
     }
     else{
-        showAll.classList.add('d-hidden');
+        showAll.classList.add('d-none');
     }
     
 
@@ -89,7 +93,8 @@ const toggleSpinner = isLoading => {
 
 // not the best way to load show All
 document.getElementById('btn-show-all').addEventListener('click', function(){
-    processSearch();
+    limit = false
+    displayPhones(allPhone);
 })
 
 const loadPhoneDetails = async id =>{
@@ -105,12 +110,13 @@ const loadPhoneDetails = async id =>{
 const displayPhoneDetails = phone =>{
     console.log(phone);
     const modalTitle = document.getElementById('phoneDetailModalLabel');
+    // console.log(modalTitle)
     modalTitle.innerText = phone.name;
     const phoneDetails = document.getElementById('phone-details');
-    console.log(phone.mainFeatures.sensors[0]);
+    console.log(phone.mainFeatures.storage);
     phoneDetails.innerHTML = `
         <p>Release Date: ${phone.releaseDate}</p>
-        <p>Storage: ${phone.mainFeatures}</p>
+        <p>Storage: ${phone.mainFeatures.storage}</p>
         <p>Others: ${phone.others ? phone.others.Bluetooth : 'No Bluetooth Information'}</p>
         <p>Sensor: ${phone.mainFeatures.sensors ? phone.mainFeatures.sensors[0] : 'no sensor'}</p>
     `
